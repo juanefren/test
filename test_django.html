@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <style>
+            p { 
+                font-size:large;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            pre {background-color:darkblue; color:aliceblue;}
+        </style>
+    </head>
+
+    <p>
+        Escribe una función que reciba un año en formato entero e imprima las fechas
+        de cada lunes y miércoles que correspondan a un día del año par.
+        (Cualquier solución que se ejecute en menos de un segundo es válida)
+    </p>
+
+    <p>-------------------------</p>
+
+
+    <p>
+        Asumiendo que tenemos los siguientes modelos
+    </p>
+
+    <pre>
+
+    class Cliente(models.Model):
+        nombre = models.CharField(max_length=255)
+
+
+    class Producto(models.Model):
+        nombre = models.CharField(max_length=255)
+
+
+    class Venta(models.Model):
+        cliente = models.ForeignKey("Cliente", on_delete=models.CASCADE)
+        fecha = models.DateTimeField()
+
+        
+    class VentaDetalle(models.Model):
+        venta = models.ForeignKey("Venta", on_delete=models.CASCADE)
+        producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+        cantidad = models.DecimalField(decimal_places=2, max_digits=12)
+        precio = models.DecimalField(decimal_places=2, max_digits=12)
+
+    </pre>
+
+    <p>
+        Se busca hacer un reporte que imprima el cliente y total por cada venta
+        Y se obtiene de la siguiete manera:
+    </p>
+    <pre>
+    
+        for venta in Venta.objects.all():
+            total_venta = 0
+            for detalle in venta.detalles.all():
+                total_venta += detalle.cantidad * detalle.precio
+                
+            print(f"Venta del cliente {venta.cliente.nombre}, por {total_venta}")
+
+    </pre>
+    
+    <p>¿Cuál consideras sería el principal o principales problemas ed la función imprimir_ventas anterior y porqué? ¿Cómo lo solucionarías?: </p>
+
+    <p>-------------------------</p>
+
+    <p>
+        ¿Cómo imprimirías esa misma información de todas las ventas de un año siempre y cuando
+        se hayan hecho en un día lunes y en un número de día par?
+    </p>
+
+</html>
